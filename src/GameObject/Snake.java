@@ -30,6 +30,7 @@ public class Snake extends Entity{
         westFace = Images.getImage(Constants.Snake.WEST_FACE);
          */
         whole_snake = Images.getImage("snake.png");
+        getSubImages();
 
         position[0] = START_POS[0];
         position[1] = START_POS[1];
@@ -43,10 +44,13 @@ public class Snake extends Entity{
     public void render(Graphics g){
         g.drawImage(eastFace,position[0],position[1],GamePanel.TILES_LENGTH,GamePanel.TILES_LENGTH,null);
     }
-    
+
     private void getSubImages(){
         int tileLength = whole_snake.getHeight()/4;
-        northFace = whole_snake.getSubimage(tileLength*4,0,tileLength,tileLength);
+        northFace = whole_snake.getSubimage(tileLength*3,0,tileLength,tileLength);
+        eastFace = whole_snake.getSubimage(tileLength*4,0,tileLength,tileLength);
+        southFace = whole_snake.getSubimage(tileLength*4,tileLength*1,tileLength,tileLength);
+        westFace = whole_snake.getSubimage(tileLength*3,tileLength*1,tileLength,tileLength);
     }
 
 }
