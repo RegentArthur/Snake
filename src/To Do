@@ -1,0 +1,9 @@
+Implement tick processes
+ - update method
+      - Colision checks
+      - Player Movement checks
+      - Snake Movement forwards
+      - Check Apple status / generate a new apple
+ - render method
+      - update apple sprite
+      - update all the snake sprites (including changing some of the body objects to bent body objects)
