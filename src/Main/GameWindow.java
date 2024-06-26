@@ -7,12 +7,12 @@ public class GameWindow {
     public JFrame frame;
     private GamePanel gamePanel;
 
-    public GameWindow(){
+    public GameWindow(GamePanel gamePanel){
         frame = new JFrame("Snake Game");
 
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        gamePanel = new GamePanel();
+        this.gamePanel = gamePanel;
 
         frame.add(gamePanel);
         frame.pack();

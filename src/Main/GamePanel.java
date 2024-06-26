@@ -25,9 +25,9 @@ public class GamePanel extends JPanel {
     public static final int GAME_WIDTH = TILES_LENGTH*TILES_PER_ROW;
     public static final int GAME_HEIGHT = TILES_LENGTH*TILES_PER_COL;
 
-    private Apple apple;
-    private Snake snake;
-    private Key key;
+    public static Apple apple;
+    public static Snake snake;
+    private static Key key;
 
     public GamePanel(){
         setPreferredSize(new Dimension(GAME_WIDTH,GAME_HEIGHT));

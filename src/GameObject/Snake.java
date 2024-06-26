@@ -11,36 +11,25 @@ public class Snake extends EntityType {
 
     private int numBodyParts;
     private int[] START_POS = {6,3};
-    protected BufferedImage northFace;
-    protected BufferedImage eastFace;
-    protected BufferedImage southFace;
-    protected BufferedImage westFace;
     protected static BufferedImage whole_snake;
-    protected int direction;
     private ArrayList<EntityType> body;
-    private int length;
 
     public Snake(){
-        numBodyParts = 0;
+        numBodyParts = 5;
         body = new ArrayList<>();
 
-
-        /*
-        body = Images.getImage(Constants.Snake.BODY);
-        northFace = Images.getImage(Constants.Snake.NORTH_FACE);
-        eastFace = Images.getImage(Constants.Snake.EAST_FACE);
-        southFace = Images.getImage(Constants.Snake.SOUTH_FACE);
-        westFace = Images.getImage(Constants.Snake.WEST_FACE);
-         */
         whole_snake = Images.getImage("snake.png");
-        startSnake(5);
+        startSnake(numBodyParts);
 
         position[0] = START_POS[0];
         position[1] = START_POS[1];
     }
 
-    private void eatApple(){
-        numBodyParts++;
+    private void checkIfEatApple(){
+        if(body.get(0).position[0] == GamePanel.apple.position[0] &&
+                body.get(0).position[1] == GamePanel.apple.position[1]) {
+            incrementSnake();
+        }
     }
 
     @Override
@@ -52,14 +41,33 @@ public class Snake extends EntityType {
         }
     }
 
-    public void startSnake(int initialSize){
-        body.add(new SnakeHead(2, START_POS[0], START_POS[1]));
-        for(int i = 1; i <= initialSize - 2; i++){
-            body.add(new SnakeBody(2, START_POS[0] - i, START_POS[1]));
-        }
-        body.add(new SnakeTail(2, START_POS[0] - initialSize+1, START_POS[1]));
+    public void update(){
+        checkIfEatApple();
+        incrementPos();
     }
 
+    private void startSnake(int size){
+        body.add(new SnakeHead(2, START_POS[0], START_POS[1]));
+        for(int i = 1; i <= size - 2; i++){
+            body.add(new SnakeBody(2, START_POS[0] - i, START_POS[1]));
+        }
+        body.add(new SnakeTail(2, START_POS[0] - size+1, START_POS[1]));
+    }
 
+    private void incrementSnake(){
+        numBodyParts++;
+
+        //assumes snake is always travelling right in same yPos, but good enough for now until we add on bends
+        int tailXPos = body.get(body.size()-1).position[0];
+        int tailYPos = body.get(body.size()-1).position[1];
+        body.add(body.size()-1, new SnakeBody(2,tailXPos,tailYPos));
+    }
+
+    //assuming only moving x direction for now
+    private void incrementPos(){
+        for(EntityType segment : body) {
+            segment.position[0]++;
+        }
+    }
 
 }
