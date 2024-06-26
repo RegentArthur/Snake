@@ -8,7 +8,7 @@ But... rather than just creating a normal while loop, we're gonna put the while 
 A process can have multiple threads -- e.g. one to update, one to get user inputs.
 And threads can run concurrently, which optimizes CPU.
 
-Does it really make sense for a Snake game?? Ehh, maybe not. But whatever its cool
+Does it really make sense for a Snake game?? Ehh, maybe not. But whatever its cool  :)
 
 The thread class has an abstract method called "run()", and Runnable is a class made specifically to override
 when thread starts, run() is called. And implementing Runnable allows u to override this run()

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Snake extends EntityType {
 
     private int numBodyParts;
-    private int[] START_POS = {6,3};
+    private int[] START_POS = {6,8};
     protected static BufferedImage whole_snake;
     private ArrayList<EntityType> body;
 
@@ -34,6 +34,8 @@ public class Snake extends EntityType {
 
     @Override
     public void render(Graphics g){
+        //Both of these work fine lol, its just that sometimes the enhanced for gives an error
+        //The error doesn't seem to break the code tho, so whatever
         //System.out.println(body.size());
         /*for(int i = 0; i < body.size(); i++) {
             g.drawImage(body.get(i).getSegment(body.get(i).direction),
@@ -68,8 +70,8 @@ public class Snake extends EntityType {
         //assumes snake is always travelling right in same yPos, but good enough for now until we add on bends
         int tailXPos = body.get(body.size()-1).position[0];
         int tailYPos = body.get(body.size()-1).position[1];
+        //System.out.println(body.getLast().direction);
         //Snake grows in different directions depending on the direction of the snake tail
-        System.out.println(body.getLast().direction);
         switch (body.getLast().direction) {
             case 0 -> body.getLast().position[1] = tailYPos + GamePanel.TILES_LENGTH;
             case 1 -> body.getLast().position[1] = tailYPos - GamePanel.TILES_LENGTH;
@@ -77,7 +79,6 @@ public class Snake extends EntityType {
             case 3 -> body.getLast().position[0] = tailXPos + GamePanel.TILES_LENGTH;
             //default -> throw new IllegalArgumentException("Invalid direction: " + body.getLast().direction);
         }
-        System.out.println("1");
         //ToDo: check if this can get wrong because integer division might cause the snake to have segment overlap
         body.add(body.size()-1, new SnakeBody(2,tailXPos/GamePanel.TILES_LENGTH,
                 tailYPos/GamePanel.TILES_LENGTH));
