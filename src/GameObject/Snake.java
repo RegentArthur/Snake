@@ -64,6 +64,7 @@ public class Snake extends EntityType {
     }
 
     //assuming only moving x direction for now
+    //note: doesnt exactly work yet, need to make it so that snake moves by one block per move
     private void incrementPos(){
         for(EntityType segment : body) {
             segment.position[0]++;
