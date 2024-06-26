@@ -15,11 +15,11 @@ public class GameWindow {
         gamePanel = new GamePanel();
 
         frame.add(gamePanel);
-
+        frame.pack();
         gamePanel.requestFocus(); //this line has to come after .pack()
         setUpField();
         frame.setLocationRelativeTo(null);
-        frame.pack();
+
         frame.setResizable(false);
 
         frame.setTitle(title);

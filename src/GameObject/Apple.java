@@ -5,7 +5,7 @@ import Main.GamePanel;
 
 import static Utilz.Constants.APPLE;
 
-public class Apple extends Entity{
+public class Apple extends EntityType {
 
     public Apple(){
        img = Images.getImage(APPLE);
