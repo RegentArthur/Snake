@@ -21,7 +21,8 @@ public class Game implements Runnable {
 
     private Thread gameThread;
     private final int FPS = 100, UPS = 3;
-    private final long NANO_PER_FRAME = 1_000_000_000/FPS, NANO_PER_UPDATE = 1_000_000_000/UPS;
+    //tweaking these values directly changes the snake's speed
+    private final long NANO_PER_FRAME = 20_000_000/FPS, NANO_PER_UPDATE = 20_000_000/UPS;
 
     private GamePanel gamePanel;
     private GameWindow gameWindow;

@@ -13,4 +13,7 @@ public class SnakeHead extends EntityType{
         this.east = whole_snake.getSubimage(tileLength*4,0,tileLength,tileLength);
         this.west = whole_snake.getSubimage(tileLength*3,tileLength,tileLength,tileLength);
     }
+    public String toString(){
+        return "Head";
+    }
 }

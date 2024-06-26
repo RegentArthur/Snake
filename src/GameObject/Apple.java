@@ -12,11 +12,16 @@ public class Apple extends EntityType {
        width = img.getWidth();
        height = img.getHeight();
        setPosition();
+       //position[0] = 9*GamePanel.TILES_LENGTH;
+       //position[1] = 3* GamePanel.TILES_LENGTH;
     }
 
-    private void setPosition(){
-        position[0] = (int)(Math.random()*GamePanel.TILES_PER_ROW)*GamePanel.TILES_LENGTH;
-        position[1] = (int)(Math.random()*GamePanel.TILES_PER_COL)*GamePanel.TILES_LENGTH;
+    public void setPosition(){
+        do {
+            position[0] = (int) (Math.random() * GamePanel.TILES_PER_ROW) * GamePanel.TILES_LENGTH;
+            position[1] = (int) (Math.random() * GamePanel.TILES_PER_COL) * GamePanel.TILES_LENGTH;
+        } while (GamePanel.snake.checkCollision(this));
     }
+
 
 }

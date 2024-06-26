@@ -14,4 +14,7 @@ public class SnakeBody extends EntityType{
         this.west = whole_snake.getSubimage(tileLength,0,tileLength,tileLength);
 
     }
+    public String toString(){
+        return "Body";
+    }
 }

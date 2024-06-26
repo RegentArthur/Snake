@@ -16,12 +16,8 @@ public class GamePanel extends JPanel {
     private BufferedImage background;
 
     public static final int TILES_LENGTH = 33;
-    public static final int TILES_PER_ROW = 15;
-    public static final int TILES_PER_COL = 17;
-
-    //graphics dont display the right number of tiles tho,
-    //im wondering if the problem is in how we declare the sizing -- im also unsure of the difference between setSize & setPreferredSize
-    //ok wait, i think im just getting confusing between row & col -- i'll check later whatever
+    public static final int TILES_PER_ROW = 19; //For some reason the number of squares is actually this -2
+    public static final int TILES_PER_COL = 19; //For this one it's this -4, don't question, it works.
     public static final int GAME_WIDTH = TILES_LENGTH*TILES_PER_ROW;
     public static final int GAME_HEIGHT = TILES_LENGTH*TILES_PER_COL;
 
@@ -33,8 +29,8 @@ public class GamePanel extends JPanel {
         setPreferredSize(new Dimension(GAME_WIDTH,GAME_HEIGHT));
 
         background = Images.getImage(GRASS);
-        apple = new Apple();
         snake = new Snake();
+        apple = new Apple();
         key = new Key();
         addKeyListener(key);
 
@@ -64,5 +60,11 @@ public class GamePanel extends JPanel {
                 g.fillRect(c*TILES_LENGTH,r*TILES_LENGTH,TILES_LENGTH,TILES_LENGTH);
             }
         }
+
+
+
     }
 }
+
+
+

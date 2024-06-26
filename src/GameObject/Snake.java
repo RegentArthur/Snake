@@ -34,6 +34,12 @@ public class Snake extends EntityType {
 
     @Override
     public void render(Graphics g){
+        //System.out.println(body.size());
+        /*for(int i = 0; i < body.size(); i++) {
+            g.drawImage(body.get(i).getSegment(body.get(i).direction),
+                    body.get(i).position[0],body.get(i).position[1],
+                    GamePanel.TILES_LENGTH,GamePanel.TILES_LENGTH,null);
+        }*/
         for(EntityType segment : body) {
             g.drawImage(segment.getSegment(segment.direction),
                     segment.position[0],segment.position[1],
@@ -43,7 +49,9 @@ public class Snake extends EntityType {
 
     public void update(){
         checkIfEatApple();
-        incrementPos();
+        if(!checkCollision()){
+            incrementPos();
+        }
     }
 
     private void startSnake(int size){
@@ -60,15 +68,42 @@ public class Snake extends EntityType {
         //assumes snake is always travelling right in same yPos, but good enough for now until we add on bends
         int tailXPos = body.get(body.size()-1).position[0];
         int tailYPos = body.get(body.size()-1).position[1];
-        body.add(body.size()-1, new SnakeBody(2,tailXPos,tailYPos));
+        //Snake grows in different directions depending on the direction of the snake tail
+        System.out.println(body.getLast().direction);
+        switch (body.getLast().direction) {
+            case 0 -> body.getLast().position[1] = tailYPos + GamePanel.TILES_LENGTH;
+            case 1 -> body.getLast().position[1] = tailYPos - GamePanel.TILES_LENGTH;
+            case 2 -> body.getLast().position[0] = tailXPos - GamePanel.TILES_LENGTH;
+            case 3 -> body.getLast().position[0] = tailXPos + GamePanel.TILES_LENGTH;
+            //default -> throw new IllegalArgumentException("Invalid direction: " + body.getLast().direction);
+        }
+        System.out.println("1");
+        //ToDo: check if this can get wrong because integer division might cause the snake to have segment overlap
+        body.add(body.size()-1, new SnakeBody(2,tailXPos/GamePanel.TILES_LENGTH,
+                tailYPos/GamePanel.TILES_LENGTH));
+        GamePanel.apple.setPosition();
     }
 
     //assuming only moving x direction for now
-    //note: doesnt exactly work yet, need to make it so that snake moves by one block per move
     private void incrementPos(){
         for(EntityType segment : body) {
             segment.position[0]++;
         }
+    }
+    private boolean checkCollision(){
+        double headXPos = (double)body.getFirst().position[0]/GamePanel.TILES_LENGTH;
+        double headYPos = (double)body.getFirst().position[1]/GamePanel.TILES_LENGTH;
+        if(headXPos<1 || headXPos>(GamePanel.TILES_PER_ROW-2) || headYPos<1 || headYPos>(GamePanel.TILES_PER_COL-4)){
+            return true;
+        }
+        return false;
+    }
+    public <T extends EntityType> boolean checkCollision(T object){
+        boolean flag = false;
+        for(EntityType segment : body){
+            segment.isInSameSquare(object);
+        }
+        return flag;
     }
 
 }

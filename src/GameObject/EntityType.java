@@ -29,13 +29,23 @@ public abstract class EntityType {
     }
 
     public BufferedImage getSegment(int direction){
-        switch (direction){
-            case 0: return north;
-            case 1: return south;
-            case 2: return east;
-            case 3: return west;
-        }
-        return null;
+        return switch (direction){
+            case 0 -> north;
+            case 1 -> south;
+            case 2 -> east;
+            case 3 -> west;
+            default -> throw new IllegalArgumentException("Invalid direction index: " + direction);
+        };
+
     }
 
+
+
+    public <T extends EntityType> boolean isInSameSquare(T object){
+        double x1 = Math.ceil((double)this.position[0]/ GamePanel.TILES_LENGTH);
+        double y1 = Math.ceil((double)this.position[1]/ GamePanel.TILES_LENGTH);
+        double x2 = Math.ceil((double)object.position[0]/ GamePanel.TILES_LENGTH);
+        double y2 = Math.ceil((double)object.position[1]/ GamePanel.TILES_LENGTH);
+        return x1==x2 && y1==y2;
+    }
 }

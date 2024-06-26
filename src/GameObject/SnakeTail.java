@@ -13,4 +13,9 @@ public class SnakeTail extends EntityType{
         this.east = whole_snake.getSubimage(tileLength*4,tileLength*2,tileLength,tileLength);
         this.west = whole_snake.getSubimage(tileLength*3,tileLength*3,tileLength,tileLength);
     }
+
+    @Override
+    public String toString() {
+        return "Tail";
+    }
 }

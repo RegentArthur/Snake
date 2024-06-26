@@ -4,7 +4,8 @@ import java.awt.image.BufferedImage;
 
 
 // This class literally does nothing, it's just a testament to the pain that was today
-/*public class Entities {
+/*
+public class Entities {
     static BufferedImage whole_snake = Snake.whole_snake;
     static int tileLength = whole_snake.getHeight()/4;
     public static EntityType snakeHead = new EntityType(whole_snake.getSubimage(tileLength*3,0,tileLength,tileLength),
