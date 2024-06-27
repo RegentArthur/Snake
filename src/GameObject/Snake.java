@@ -25,8 +25,7 @@ public class Snake extends EntityType {
     private int numBodyParts;
     private int[] START_POS = {6,8};
     protected static BufferedImage whole_snake;
-    //It would actually make more sense to use a LinkedList here, but its ok
-    private ArrayList<EntityType> body;
+    private ArrayList<EntityType> body;   //It would actually make more sense to use a LinkedList here, but its ok
     private int nextKeyInput = -1;
     private LinkedList<TurningPoint> turningPoints = new LinkedList<>();
     public Snake(){
@@ -85,7 +84,7 @@ public class Snake extends EntityType {
             turningPoints.add(new TurningPoint(body.getFirst().position[0], body.getFirst().position[1], body.getFirst().direction));
             nextKeyInput = -1;
         }
-        System.out.println(turningPoints.size());
+        System.out.println(turningPoints.size()); // testing purposes, seeing if they're the right value
         // Update the body segments
         for (int i = 1; i < body.size(); i++) {
             EntityType segment = body.get(i);
@@ -123,7 +122,6 @@ public class Snake extends EntityType {
     private void incrementSnake(){
         numBodyParts++;
 
-        //assumes snake is always travelling right in same yPos, but good enough for now until we add on bends
         int tailXPos = body.get(body.size()-1).position[0];
         int tailYPos = body.get(body.size()-1).position[1];
         //System.out.println(body.getLast().direction);
@@ -142,7 +140,6 @@ public class Snake extends EntityType {
         GamePanel.apple.setPosition();
     }
 
-    //assuming only moving x direction for now
     private void incrementPos(){
         for(EntityType segment : body) {
             switch (segment.direction){
@@ -151,7 +148,6 @@ public class Snake extends EntityType {
                 case 2 -> segment.position[0]++;
                 case 3 -> segment.position[0]--;
             }
-            //segment.position[0]++;
         }
     }
     private boolean checkCollision(){
