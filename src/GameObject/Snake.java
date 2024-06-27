@@ -5,15 +5,30 @@ import Utilz.Images;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.*;
+
 
 public class Snake extends EntityType {
+    class TurningPoint { // this is essentially just to serve as a marking of where the snake has turned
+        int x;
+        int y;
+        int direction;
+        static int index = 0;
 
+        public TurningPoint(int x, int y, int direction) {
+            this.x = x;
+            this.y = y;
+            this.direction = direction;
+            index++;
+        }
+    }
     private int numBodyParts;
     private int[] START_POS = {6,8};
     protected static BufferedImage whole_snake;
+    //It would actually make more sense to use a LinkedList here, but its ok
     private ArrayList<EntityType> body;
-
+    private int nextKeyInput = -1;
+    private LinkedList<TurningPoint> turningPoints = new LinkedList<>();
     public Snake(){
         numBodyParts = 5;
         body = new ArrayList<>();
@@ -51,11 +66,52 @@ public class Snake extends EntityType {
 
     public void update(){
         checkIfEatApple();
-        if(!checkCollision()){
+        //this movement doesn't feel as snappy as the original game, so we should probably tweak this later
+        checkTurns();
+        //ToDo: the self-collision doesnt work, ill get to it later
+        if(!checkCollision() && !checkCollision(body.getFirst())){
             incrementPos();
         }
     }
 
+    // Another way we could do this method is just by using a hashmap of turning points with location
+    // as the dictionary, and that will probably be faster. Oh and you wouldn't need the turningPointIndex
+    // complicated stuff too, yea I shoulda just done that, ill switch it over tmrw
+    // well, idk yet actually, the linked list might work better for implementing the bent pngs, although I kinda doubt it
+    // ToDo: for practice, change this logic such that it implements a hashMap instead
+    public void checkTurns(){
+        if(isHeadAlignedWithGrid() && nextKeyInput != -1){
+            body.getFirst().direction = nextKeyInput;
+            turningPoints.add(new TurningPoint(body.getFirst().position[0], body.getFirst().position[1], body.getFirst().direction));
+            nextKeyInput = -1;
+        }
+        System.out.println(turningPoints.size());
+        // Update the body segments
+        for (int i = 1; i < body.size(); i++) {
+            EntityType segment = body.get(i);
+            // segment.turningPointIndex is the number of turns that the segment has completed
+            // turningPoints.size() is the number of turns that the snake has done currently
+            if (segment.turningPointIndex < turningPoints.size()) { // Check if the segment has more turning points to get to
+                TurningPoint tp = turningPoints.get(segment.turningPointIndex);
+                if (segment.position[0] == tp.x && segment.position[1] == tp.y) { // Check if it is the right position to turn
+                    segment.direction = tp.direction;
+                    segment.turningPointIndex++; // mark that the segment has completed another turn
+                }
+            }
+            System.out.print(segment.turningPointIndex);
+        }
+        System.out.println();
+
+        // Remove turning points that have been processed by all segments
+        // If the tail segment has completed a turn, that means that the snake is past that turning point,
+        // which is the first one in the linked list
+        if (!turningPoints.isEmpty() && body.getLast().turningPointIndex > 0) {
+            turningPoints.poll(); // removes the first item in the linked list
+            for (EntityType segment : body) {
+                segment.turningPointIndex--; // Adjust the index for all segments
+            }
+        }
+    }
     private void startSnake(int size){
         body.add(new SnakeHead(2, START_POS[0], START_POS[1]));
         for(int i = 1; i <= size - 2; i++){
@@ -80,15 +136,22 @@ public class Snake extends EntityType {
             //default -> throw new IllegalArgumentException("Invalid direction: " + body.getLast().direction);
         }
         //ToDo: check if this can get wrong because integer division might cause the snake to have segment overlap
-        body.add(body.size()-1, new SnakeBody(2,tailXPos/GamePanel.TILES_LENGTH,
-                tailYPos/GamePanel.TILES_LENGTH));
+        // but its lowkey fine tho
+        body.add(body.size()-1, new SnakeBody(body.getLast().direction,tailXPos/GamePanel.TILES_LENGTH,
+                tailYPos/GamePanel.TILES_LENGTH, body.getLast().turningPointIndex));
         GamePanel.apple.setPosition();
     }
 
     //assuming only moving x direction for now
     private void incrementPos(){
         for(EntityType segment : body) {
-            segment.position[0]++;
+            switch (segment.direction){
+                case 0 -> segment.position[1]--;
+                case 1 -> segment.position[1]++;
+                case 2 -> segment.position[0]++;
+                case 3 -> segment.position[0]--;
+            }
+            //segment.position[0]++;
         }
     }
     private boolean checkCollision(){
@@ -102,9 +165,21 @@ public class Snake extends EntityType {
     public <T extends EntityType> boolean checkCollision(T object){
         boolean flag = false;
         for(EntityType segment : body){
-            segment.isInSameSquare(object);
+            if(segment != object) {
+                segment.isInSameSquare(object);
+            }
         }
         return flag;
+    }
+
+    public void changeHeadDirection(int direction){
+        if(!(Math.abs(body.getFirst().direction - direction) == 1) ||
+                (body.getFirst().direction == 1 && direction==2) || (body.getFirst().direction == 2 && direction==1)){
+            nextKeyInput = direction;
+        }
+    }
+    private boolean isHeadAlignedWithGrid() {
+        return (body.getFirst().position[0] % GamePanel.TILES_LENGTH == 0) && (body.getFirst().position[1] % GamePanel.TILES_LENGTH == 0);
     }
 
 }

@@ -12,7 +12,14 @@ public class SnakeBody extends EntityType{
         this.south = whole_snake.getSubimage(tileLength*2,tileLength,tileLength,tileLength);
         this.east = whole_snake.getSubimage(tileLength,0,tileLength,tileLength);
         this.west = whole_snake.getSubimage(tileLength,0,tileLength,tileLength);
-
+    }
+    public SnakeBody(int direction, int xPos, int yPos, int turningPointIndex){
+        super(direction, xPos, yPos);
+        this.north = whole_snake.getSubimage(tileLength*2,tileLength,tileLength,tileLength);
+        this.south = whole_snake.getSubimage(tileLength*2,tileLength,tileLength,tileLength);
+        this.east = whole_snake.getSubimage(tileLength,0,tileLength,tileLength);
+        this.west = whole_snake.getSubimage(tileLength,0,tileLength,tileLength);
+        this.turningPointIndex = turningPointIndex;
     }
     public String toString(){
         return "Body";

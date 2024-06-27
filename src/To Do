@@ -1,9 +1,6 @@
 Implement tick processes
- - update method
-      - Player Movement checks
  - render method
-      - update apple sprite
-      - update all the snake sprites (including changing some of the body objects to bent body objects)
+    - update the bent body objects
 
 Score
 Menu

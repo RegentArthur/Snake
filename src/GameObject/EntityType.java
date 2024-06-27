@@ -16,6 +16,7 @@ public abstract class EntityType {
     public BufferedImage south;
     public BufferedImage east;
     public BufferedImage west;
+    public int turningPointIndex = 0;
 
     public void render(Graphics g){
         g.drawImage(img, position[0], position[1], GamePanel.TILES_LENGTH, GamePanel.TILES_LENGTH, null);
