@@ -3,6 +3,7 @@ package GameObject;
 import Main.GamePanel;
 import Utilz.Images;
 
+import javax.swing.text.html.parser.Entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -24,13 +25,14 @@ public class Snake extends EntityType {
     }
     private int numBodyParts;
     private int[] START_POS = {6,8};
+    public boolean isTurning = false;
     protected static BufferedImage whole_snake;
-    private ArrayList<EntityType> body;   //It would actually make more sense to use a LinkedList here, but its ok
+    private LinkedList<EntityType> body;   //It would actually make more sense to use a LinkedList here, but its ok
     private int nextKeyInput = -1;
     private LinkedList<TurningPoint> turningPoints = new LinkedList<>();
     public Snake(){
         numBodyParts = 5;
-        body = new ArrayList<>();
+        body = new LinkedList<>();
 
         whole_snake = Images.getImage("snake.png");
         startSnake(numBodyParts);
@@ -57,10 +59,17 @@ public class Snake extends EntityType {
                     GamePanel.TILES_LENGTH,GamePanel.TILES_LENGTH,null);
         }*/
         for(EntityType segment : body) {
-            g.drawImage(segment.getSegment(segment.direction),
-                    segment.position[0],segment.position[1],
-                    GamePanel.TILES_LENGTH,GamePanel.TILES_LENGTH,null);
+            if(isTurning && segment != body.getFirst()){
+                g.drawImage(getSegmentIfTurning(segment, segment.direction),segment.position[0], segment.position[1],
+                        GamePanel.TILES_LENGTH, GamePanel.TILES_LENGTH, null);
+            }else{
+                g.drawImage(segment.getSegment(segment.direction),
+                        segment.position[0], segment.position[1],
+                        GamePanel.TILES_LENGTH, GamePanel.TILES_LENGTH, null);
+            }
         }
+
+
     }
 
     public void update(){
@@ -68,7 +77,7 @@ public class Snake extends EntityType {
         //this movement doesn't feel as snappy as the original game, so we should probably tweak this later
         checkTurns();
         //ToDo: the self-collision doesnt work, ill get to it later
-        if(!checkCollision() && !checkCollision(body.getFirst())){
+        if(!checkCollision() && !checkCollisionWithHead()){
             incrementPos();
         }
     }
@@ -84,7 +93,7 @@ public class Snake extends EntityType {
             turningPoints.add(new TurningPoint(body.getFirst().position[0], body.getFirst().position[1], body.getFirst().direction));
             nextKeyInput = -1;
         }
-        System.out.println(turningPoints.size()); // testing purposes, seeing if they're the right value
+        //System.out.println(turningPoints.size()); // testing purposes, seeing if they're the right value
         // Update the body segments
         for (int i = 1; i < body.size(); i++) {
             EntityType segment = body.get(i);
@@ -97,9 +106,9 @@ public class Snake extends EntityType {
                     segment.turningPointIndex++; // mark that the segment has completed another turn
                 }
             }
-            System.out.print(segment.turningPointIndex);
+            //System.out.print(segment.turningPointIndex);
         }
-        System.out.println();
+        //System.out.println();
 
         // Remove turning points that have been processed by all segments
         // If the tail segment has completed a turn, that means that the snake is past that turning point,
@@ -162,11 +171,21 @@ public class Snake extends EntityType {
         boolean flag = false;
         for(EntityType segment : body){
             if(segment != object) {
-                segment.isInSameSquare(object);
+                return segment.isInSameSquare(object);
             }
         }
         return flag;
     }
+
+    public boolean checkCollisionWithHead(){
+        for(int i=2; i<body.size(); i++){ //start w/2nd segment cuz head can never collide with 1st segment
+            if(body.get(i).isInSameSquare(body.getFirst())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void changeHeadDirection(int direction){
         if(!(Math.abs(body.getFirst().direction - direction) == 1) ||
@@ -176,6 +195,35 @@ public class Snake extends EntityType {
     }
     private boolean isHeadAlignedWithGrid() {
         return (body.getFirst().position[0] % GamePanel.TILES_LENGTH == 0) && (body.getFirst().position[1] % GamePanel.TILES_LENGTH == 0);
+    }
+
+    /*
+    public BufferedImage rightNDown, upNLeft;
+    public BufferedImage rightNUp, downNLeft;
+    public BufferedImage leftNDown, upNRight;
+    public BufferedImage leftNUp, downNRight;
+
+    // 0: North, 1: South, 2: East, 3: West
+     */
+
+
+    public BufferedImage getSegmentIfTurning(EntityType segment, int direction){
+        int dirHead = body.getFirst().direction;
+
+        int dirSegment = segment.direction;
+
+        if((dirSegment == 2 && dirHead == 1) || (dirSegment == 0 && dirHead == 3)){
+            return SnakeBody.rightNDown;
+        }else if((dirSegment == 2 && dirHead == 0) || (dirSegment == 1 && dirHead == 3)){
+            return SnakeBody.rightNUp;
+        }else if((dirSegment == 3 && dirHead == 1) || (dirSegment == 0 && dirHead == 2)){
+            return SnakeBody.leftNDown;
+        }else if((dirSegment == 3 && dirHead == 0) || (dirSegment == 1 && dirHead == 2)) {
+            return SnakeBody.leftNUp;
+        }else{
+            return segment.getSegment(direction);
+        }
+
     }
 
 }

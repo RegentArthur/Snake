@@ -16,15 +16,19 @@ public class Key implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W -> {
+                GamePanel.snake.isTurning = true;
                 GamePanel.snake.changeHeadDirection(0);
             }
             case KeyEvent.VK_D -> {
+                GamePanel.snake.isTurning = true;
                 GamePanel.snake.changeHeadDirection(2);
             }
             case KeyEvent.VK_S -> {
+                GamePanel.snake.isTurning = true;
                 GamePanel.snake.changeHeadDirection(1);
             }
             case KeyEvent.VK_A -> {
+                GamePanel.snake.isTurning = true;
                 GamePanel.snake.changeHeadDirection(3);
             }
         }

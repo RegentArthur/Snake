@@ -42,6 +42,7 @@ public abstract class EntityType {
 
 
 
+
     public <T extends EntityType> boolean isInSameSquare(T object){
         double x1 = Math.ceil((double)this.position[0]/ GamePanel.TILES_LENGTH);
         double y1 = Math.ceil((double)this.position[1]/ GamePanel.TILES_LENGTH);
