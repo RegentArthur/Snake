@@ -10,17 +10,15 @@ import java.util.*;
 
 
 public class Snake extends EntityType {
-    class TurningPoint { // this is essentially just to serve as a marking of where the snake has turned
+    class TurningPoint extends EntityType{ // this is essentially just to serve as a marking of where the snake has turned
         int x;
         int y;
-        int direction;
-        static int index = 0;
-
         public TurningPoint(int x, int y, int direction) {
             this.x = x;
             this.y = y;
             this.direction = direction;
-            index++;
+            this.position[0] = x;
+            this.position[1] = y;
         }
     }
     private int numBodyParts;
@@ -30,6 +28,8 @@ public class Snake extends EntityType {
     private LinkedList<EntityType> body;   //It would actually make more sense to use a LinkedList here, but its ok
     private int nextKeyInput = -1;
     private LinkedList<TurningPoint> turningPoints = new LinkedList<>();
+    private int test = 0;
+    public int score = 0;
     public Snake(){
         numBodyParts = 5;
         body = new LinkedList<>();
@@ -50,24 +50,42 @@ public class Snake extends EntityType {
 
     @Override
     public void render(Graphics g){
-        //Both of these work fine lol, its just that sometimes the enhanced for gives an error
-        //The error doesn't seem to break the code tho, so whatever
-        //System.out.println(body.size());
-        /*for(int i = 0; i < body.size(); i++) {
-            g.drawImage(body.get(i).getSegment(body.get(i).direction),
-                    body.get(i).position[0],body.get(i).position[1],
-                    GamePanel.TILES_LENGTH,GamePanel.TILES_LENGTH,null);
-        }*/
-        for(EntityType segment : body) {
-            if(isTurning && segment != body.getFirst()){
-                g.drawImage(getSegmentIfTurning(segment, segment.direction),segment.position[0], segment.position[1],
-                        GamePanel.TILES_LENGTH, GamePanel.TILES_LENGTH, null);
-            }else{
+        for(int i = 0; i<body.size();i++) {
+            EntityType segment = body.get(i);
+            if(segment != body.getFirst() && segment.turningPointIndex < turningPoints.size() && turningPoints.get(segment.turningPointIndex).isInSameSquare(segment) ){
+                //System.out.println(test);
+                //test++;
+                int turnPosX = turningPoints.get(segment.turningPointIndex).position[0];
+                int turnPosY = turningPoints.get(segment.turningPointIndex).position[1];
+                g.drawImage(getSegmentIfTurning(segment,segment.direction, turningPoints.get(segment.turningPointIndex)),
+                        turnPosX, turnPosY, GamePanel.TILES_LENGTH, GamePanel.TILES_LENGTH, null);
+                //ToDo: still need to figure out a way to make this look smooth, this fixes some things, but it def has its issues
+                if(segment != body.getLast() ){
+                    if(!(segment.turningPointIndex == 0)&&turningPoints.get(segment.turningPointIndex-1).isInSameSquare(body.get(i+1))){
+                        continue;
+                    }
+                    switch (segment.direction) {
+                        case 0 -> turnPosY = turnPosY + GamePanel.TILES_LENGTH;
+                        case 1 -> turnPosY = turnPosY - GamePanel.TILES_LENGTH;
+                        case 2 -> turnPosX = turnPosX - GamePanel.TILES_LENGTH;
+                        case 3 -> turnPosX = turnPosX + GamePanel.TILES_LENGTH;
+                        //default -> throw new IllegalArgumentException("Invalid direction: " + body.getLast().direction);
+                    }
+                    g.drawImage(segment.getSegment(segment.direction), turnPosX, turnPosY, GamePanel.TILES_LENGTH, GamePanel.TILES_LENGTH, null);
+                }
+            } else{
                 g.drawImage(segment.getSegment(segment.direction),
                         segment.position[0], segment.position[1],
                         GamePanel.TILES_LENGTH, GamePanel.TILES_LENGTH, null);
+
             }
         }
+        /*if(segment != body.getFirst() && segment.turningPointIndex < turningPoints.size() && segment.isInSameSquare(turningPoints.get(segment.turningPointIndex)) ) {
+            g.drawImage(getSegmentIfTurning())
+        }
+        for(TurningPoint turn : turningPoints) {
+
+        } */
 
 
     }
@@ -130,7 +148,7 @@ public class Snake extends EntityType {
 
     private void incrementSnake(){
         numBodyParts++;
-
+        score++;
         int tailXPos = body.get(body.size()-1).position[0];
         int tailYPos = body.get(body.size()-1).position[1];
         //System.out.println(body.getLast().direction);
@@ -147,6 +165,8 @@ public class Snake extends EntityType {
         body.add(body.size()-1, new SnakeBody(body.getLast().direction,tailXPos/GamePanel.TILES_LENGTH,
                 tailYPos/GamePanel.TILES_LENGTH, body.getLast().turningPointIndex));
         GamePanel.apple.setPosition();
+
+
     }
 
     private void incrementPos(){
@@ -207,8 +227,8 @@ public class Snake extends EntityType {
      */
 
 
-    public BufferedImage getSegmentIfTurning(EntityType segment, int direction){
-        int dirHead = body.getFirst().direction;
+    public BufferedImage getSegmentIfTurning(EntityType segment, int direction, EntityType turningPoint){
+        int dirHead = turningPoint.direction;
 
         int dirSegment = segment.direction;
 

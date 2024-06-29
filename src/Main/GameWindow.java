@@ -41,6 +41,8 @@ public class GameWindow {
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.VERTICAL; // centers the text vertically
         gbc.insets = new Insets(0, 40, 0, 0);
+
+        //ToDo: implement the display to show the score
         JLabel scoreLabel = new JLabel("Cutie :)");
         topBar.add(scoreLabel, gbc);
         scoreLabel.setForeground(Color.white);

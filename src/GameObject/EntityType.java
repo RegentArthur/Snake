@@ -40,14 +40,13 @@ public abstract class EntityType {
 
     }
 
-
-
-
+    // THIS TOOK ME SO LONG TO FIND, WHY IS THE GRID LINE IN THE CENTER OF THE SQUARE
+    // ALL I NEEDED WAS TO CHANGE CEIL TO ROUND WTF
     public <T extends EntityType> boolean isInSameSquare(T object){
-        double x1 = Math.ceil((double)this.position[0]/ GamePanel.TILES_LENGTH);
-        double y1 = Math.ceil((double)this.position[1]/ GamePanel.TILES_LENGTH);
-        double x2 = Math.ceil((double)object.position[0]/ GamePanel.TILES_LENGTH);
-        double y2 = Math.ceil((double)object.position[1]/ GamePanel.TILES_LENGTH);
+        double x1 = Math.round((double)this.position[0]/ GamePanel.TILES_LENGTH);
+        double y1 = Math.round((double)this.position[1]/ GamePanel.TILES_LENGTH);
+        double x2 = Math.round((double)object.position[0]/ GamePanel.TILES_LENGTH);
+        double y2 = Math.round((double)object.position[1]/ GamePanel.TILES_LENGTH);
         return x1==x2 && y1==y2;
     }
 }
