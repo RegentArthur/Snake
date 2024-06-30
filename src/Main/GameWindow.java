@@ -19,7 +19,7 @@ public class GameWindow {
         I am so pissed that i spent 1.5 hours on this
         The first way I did it, was essentially just create another class that extends JPanel for the top bar itself,
         importing all the set field methods. But even though I replicated my rendering for GamePanel, added all the components
-        to the containers etc, somehow, just somehow, the paintComponent() method refused to re-run
+        to the containers, somehow, just somehow, the paintComponent() method refused to re-run
          */
         topBar = new JPanel(new GridBagLayout()){
             public void paintComponent(Graphics g){
