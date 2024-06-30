@@ -15,6 +15,10 @@ when thread starts, run() is called. And implementing Runnable allows u to overr
 */
 
 
+import Buttons.MenuInterface;
+import GameStates.GameState;
+import GameStates.MenuState;
+
 import java.awt.*;
 
 public class Game implements Runnable {
@@ -24,12 +28,19 @@ public class Game implements Runnable {
     //tweaking these values directly changes the snake's speed, it feels pretty good rn
     private final long NANO_PER_FRAME = 14_000_000/FPS, NANO_PER_UPDATE = 14_000_000/UPS;
 
-    private GamePanel gamePanel;
-    private GameWindow gameWindow;
+    private static GamePanel gamePanel;
+    public static GameWindow gameWindow;
+    private static MenuState menuState;
+    public static MenuInterface menuInterface;
 
     public Game(){
-        gamePanel = new GamePanel();
+        gamePanel = new GamePanel(this);
         gameWindow = new GameWindow(gamePanel);
+
+        menuInterface = new MenuInterface();
+        menuState = new MenuState();
+
+
         startGameLoop();
     }
 
@@ -48,7 +59,7 @@ public class Game implements Runnable {
             long currentTimeUpdates = System.nanoTime();
 
             if(currentTimeFrames-startTimeFrames >= NANO_PER_FRAME){
-                render();
+                gamePanel.repaint();
                 startTimeFrames = currentTimeFrames;
             }
 
@@ -61,11 +72,28 @@ public class Game implements Runnable {
         }
     }
 
-    private void render() {
-        gamePanel.repaint();
+    public void render(Graphics g) {
+        if(GameState.state == GameState.MENU){
+            try{
+                menuState.render(g);
+            } catch (Exception e) {
+                System.out.println("Menu State not created yet");
+                //this will always print, because I have to instantiate MenuState & MenuInterface after GamePanel & GameWindow,
+                //cuz MenuState & MenuInterface need the latter two's attributes
+            }
+
+        }else {
+            gamePanel.drawLevel(g);
+            GamePanel.apple.render(g);
+            GamePanel.snake.render(g);
+
+            gameWindow.topBar.repaint();
+        }
     }
 
     private void update() {
-        GamePanel.snake.update();
+        if(GameState.state == GameState.PLAY) {
+            GamePanel.snake.update();
+        }
     }
 }

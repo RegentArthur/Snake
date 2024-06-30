@@ -28,14 +28,15 @@ public class Snake extends EntityType {
     private LinkedList<EntityType> body;   //It would actually make more sense to use a LinkedList here, but its ok
     private int nextKeyInput = -1;
     private LinkedList<TurningPoint> turningPoints = new LinkedList<>();
-    private int test = 0;
-    public int score = 0;
+    private int score;
+
     public Snake(){
         numBodyParts = 5;
         body = new LinkedList<>();
 
         whole_snake = Images.getImage("snake.png");
         startSnake(numBodyParts);
+        score = 0;
 
         position[0] = START_POS[0];
         position[1] = START_POS[1];
@@ -149,6 +150,7 @@ public class Snake extends EntityType {
     private void incrementSnake(){
         numBodyParts++;
         score++;
+        System.out.println(score);
         int tailXPos = body.get(body.size()-1).position[0];
         int tailYPos = body.get(body.size()-1).position[1];
         //System.out.println(body.getLast().direction);
@@ -244,6 +246,10 @@ public class Snake extends EntityType {
             return segment.getSegment(direction);
         }
 
+    }
+
+    public int getScore(){
+        return score;
     }
 
 }

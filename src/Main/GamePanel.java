@@ -1,8 +1,10 @@
 package Main;
 
+import Buttons.MenuInterface;
 import GameObject.Apple;
 import GameObject.Snake;
 import UserInput.Key;
+import UserInput.Mouse;
 import Utilz.Images;
 
 import javax.swing.*;
@@ -17,35 +19,42 @@ public class GamePanel extends JPanel {
 
     public static final int TILES_LENGTH = 33;
     public static final int TILES_PER_ROW = 19; //For some reason the number of squares is actually this -2
-    public static final int TILES_PER_COL = 19; //For this one it's this -4, don't question, it works.
+    public static final int TILES_PER_COL = 19; //-4
     public static final int GAME_WIDTH = TILES_LENGTH*TILES_PER_ROW;
     public static final int GAME_HEIGHT = TILES_LENGTH*TILES_PER_COL;
 
     public static Apple apple;
     public static Snake snake;
     private static Key key;
+    private static Mouse mouse;
 
-    public GamePanel(){
+    public static Game game;
+
+    public GamePanel(Game game){
         setPreferredSize(new Dimension(GAME_WIDTH,GAME_HEIGHT));
 
         background = Images.getImage(GRASS);
         snake = new Snake();
         apple = new Apple();
         key = new Key();
+        mouse = new Mouse();
         addKeyListener(key);
+        addMouseListener(mouse);
 
-        this.setBorder(BorderFactory.createLineBorder(new Color(18, 21, 28), 33));
+        this.game = game;
 
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        drawLevel(g);
-        apple.render(g);
-        snake.render(g);
+        game.render(g);
     }
 
-    private void drawLevel(Graphics g){
+    public void drawLevel(Graphics g){
+
+        Game.gameWindow.setUpField();
+        this.setBorder(BorderFactory.createLineBorder(new Color(18, 21, 28), 33));
+
         for(int r=0; r<TILES_PER_COL; r++){
             for(int c=0; c<TILES_PER_ROW; c++){
                 //green background:
