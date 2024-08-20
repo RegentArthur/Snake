@@ -39,7 +39,8 @@ public class Game implements Runnable {
 
         menuInterface = new MenuInterface();
         menuState = new MenuState();
-
+        gameWindow.frame.add(menuState);
+        gameWindow.frame.setVisible(true);
 
         startGameLoop();
     }
@@ -59,7 +60,9 @@ public class Game implements Runnable {
             long currentTimeUpdates = System.nanoTime();
 
             if(currentTimeFrames-startTimeFrames >= NANO_PER_FRAME){
-                gamePanel.repaint();
+                if(GameState.state == GameState.PLAY) {
+                    gamePanel.repaint();
+                }
                 startTimeFrames = currentTimeFrames;
             }
 
@@ -73,6 +76,8 @@ public class Game implements Runnable {
     }
 
     public void render(Graphics g) {
+
+        /*
         if(GameState.state == GameState.MENU){
             try{
                 menuState.render(g);
@@ -88,6 +93,14 @@ public class Game implements Runnable {
             GamePanel.snake.render(g);
 
             gameWindow.topBar.repaint();
+        }
+
+         */
+
+        if(GameState.state == GameState.PLAY) {
+            gamePanel.drawLevel(g);
+            GamePanel.apple.render(g);
+            GamePanel.snake.render(g);
         }
     }
 
