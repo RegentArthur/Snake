@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static Main.Game.gameWindow;
 import static Utilz.Constants.GRASS;
 
 public class GamePanel extends JPanel {
@@ -52,7 +53,6 @@ public class GamePanel extends JPanel {
 
     public void drawLevel(Graphics g){
 
-        Game.gameWindow.setUpField();
         this.setBorder(BorderFactory.createLineBorder(new Color(18, 21, 28), 33));
 
         for(int r=0; r<TILES_PER_COL; r++){
@@ -70,7 +70,7 @@ public class GamePanel extends JPanel {
             }
         }
 
-
+        gameWindow.topBar.topBar.repaint();
 
     }
 }
