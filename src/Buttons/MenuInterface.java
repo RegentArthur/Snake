@@ -3,33 +3,38 @@ package Buttons;
 import GameStates.GameState;
 import GameStates.MenuState;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 import static Utilz.Constants.MENU_UI;
 
+/**
+ * The {@code MenuInterface} class represents the interactive menu interface for the game.
+ *
+ * <p>This class manages menu-related interactions, such as handling clicks on the "Play"
+ * and "Exit" buttons, and defines the layout and behavior of the menu.
+ */
 public class MenuInterface extends Button {
 
-    private BufferedImage[] subImg;
-
+    /**
+     * Constructs a {@code MenuInterface} object and initializes its position, dimensions,
+     * and button states for rendering.
+     */
     public MenuInterface(){
         super(MENU_UI);
-        subImg = new BufferedImage[3];
         location[0] = MenuState.X_DISPLACEMENT;
         location[1] = MenuState.Y_DISPLACEMENT;
         dimension[0] = MenuState.WIDTH_IMG;
         dimension[1] = MenuState.HEIGHT_IMG/3; //ehh, not exact but isok
     }
 
-    /*
-    private void getSubImages(){
-        for(int i=0; i< subImg.length; i++){
-            img.getSubimage(0,(int)(i*dimension[1]),(int)dimension[0],(int)dimension[1]);
-        }
-    }
+    /**
+     * Handles mouse click events and triggers the appropriate actions based on the button clicked.
+     *
+     * <p>If the "Play" button is clicked, the game transitions to the {@code PLAY} state.
+     * If the "Exit" button is clicked, the application exits.
+     *
+     * @param e the {@link MouseEvent} representing the mouse click
      */
-
     public void mouseClicked(MouseEvent e) {
         getMouseLoc(e);
 
@@ -45,6 +50,11 @@ public class MenuInterface extends Button {
 
     }
 
+    /**
+     * Checks if the current mouse position is within the horizontal bounds of the menu interface.
+     *
+     * @return {@code true} if the mouse is within the x-bounds, {@code false} otherwise
+     */
     private boolean isWithinXBounds(){
         return mouseX >= location[0] && mouseX <= location[0]+dimension[0];
     }

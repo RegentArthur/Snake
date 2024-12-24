@@ -1,0 +1,75 @@
+Snake Game
+==========
+A simple Snake game built in Java, demonstrating a multi-threaded game loop,
+keyboard & mouse input, and 2D rendering.
+
+Playing
+-------
+1. Compile
+   - Use your preferred IDE or command-line tools (e.g., `javac`) to compile
+     all `.java` files under `src/`.
+   - Or simply open the project in an IDE (e.g., IntelliJ) and let it handle
+     compilation automatically.
+
+2. Run
+   - From the `src` directory (once compiled), run:
+     java Main.Main
+   - The game window should appear, showing the main menu.
+   - Click the Play button (the settings button is not implemented)
+
+3. Gameplay
+   - Snake Controls: Move using the W, A, S, D keys.
+   - Objective: Eat apples and grow your snake without colliding into
+     walls or yourself.
+
+Goals
+-----
+1. Demonstrate a simple game loop using Java threads (Runnable).
+2. Provide keyboard/mouse input handling via listener classes (Key, Mouse).
+3. Organize code into logical packages for game objects, states, and UI.
+4. Showcase 2D drawing in a Swing JPanel.
+
+Project Layout
+--------------
+
+res/ textures
+src/
+- Buttons/
+  - Button, MenuInterface: Handling of UI buttons and interactions.
+
+- GameObject/
+  - Apple, EntityType, Snake, SnakeBody, SnakeHead, SnakeTail:
+    All snake-related classes and the apple game object.
+
+- GameStates/
+  - GameState, MenuState, StateMethods:
+    Enums and interfaces for handling different game states (e.g., Menu vs. Play).
+
+- Main/
+  - Game, GamePanel, GameWindow, Main:
+    Core classes to initialize and run the game loop, manage the main window, and launch the program.
+
+- UserInput/
+  - Key, Mouse:
+    Listener classes for keyboard and mouse events.
+
+- Utilz/
+  - Constants, Images:
+    Utility classes for shared constants and image loading.
+
+Work Distribution
+-----------------
+
+Caedy: multithreading, menu panel, user input, game states, textures
+
+Oliver: game object manipulation/logic, object rendering, game panel
+
+Known Issues
+------------
+1. The settings button in the menu is not implemented
+2. There is no window after the game closes, which should include the
+   user's high score and a way to replay the game.
+3. Additional validation/robust error-handling (e.g., user input)
+   may be limited due to the project’s scope or deadlines.
+
+Enjoy our Snake Game!

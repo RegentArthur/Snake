@@ -1,17 +1,27 @@
 package UserInput;
 
 import Main.GamePanel;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Key is a KeyListener that controls the Snake's direction using WASD keys.
+ */
 public class Key implements KeyListener {
 
+    /**
+     * Invoked when a key has been typed.
+     * (Not used in this implementation.)
+     */
     @Override
     public void keyTyped(KeyEvent e) {
-
+        // No action
     }
 
+    /**
+     * Invoked when a key is pressed down.
+     * Changes the Snake's direction based on WASD.
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -34,8 +44,12 @@ public class Key implements KeyListener {
         }
     }
 
+    /**
+     * Invoked when a key is released.
+     * (Not used in this implementation.)
+     */
     @Override
     public void keyReleased(KeyEvent e) {
-
+        // No action
     }
 }

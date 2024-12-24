@@ -1,7 +1,9 @@
 package GameObject;
-
 import java.awt.image.BufferedImage;
 
+/**
+ * The {@code SnakeBody} class represents the body segment of a snake in the game.
+ */
 public class SnakeBody extends EntityType{
     static BufferedImage whole_snake = Snake.whole_snake;
     static int tileLength = whole_snake.getHeight()/4;
@@ -11,6 +13,13 @@ public class SnakeBody extends EntityType{
     public static BufferedImage leftNDown, upNRight;
     public static BufferedImage leftNUp, downNRight;
 
+    /**
+     * Constructs a {@code SnakeBody} object with the specified direction and position.
+     *
+     * @param direction the initial direction of the snake's body
+     * @param xPos the x-coordinate of the snake's body
+     * @param yPos the y-coordinate of the snake's body
+     */
     public SnakeBody(int direction, int xPos, int yPos){
         super(direction, xPos, yPos);
         this.north = whole_snake.getSubimage(tileLength*2,tileLength,tileLength,tileLength);
@@ -28,6 +37,15 @@ public class SnakeBody extends EntityType{
         leftNUp = whole_snake.getSubimage(0,tileLength,tileLength,tileLength);
         downNRight = leftNUp;
     }
+
+    /**
+     * Constructs a {@code SnakeBody} object with the specified direction, position, and turning point index.
+     *
+     * @param direction the initial direction of the snake's body
+     * @param xPos the x-coordinate of the snake's body
+     * @param yPos the y-coordinate of the snake's body
+     * @param turningPointIndex the index of the turning point in the snake's path
+     */
     public SnakeBody(int direction, int xPos, int yPos, int turningPointIndex){
         super(direction, xPos, yPos);
         this.north = whole_snake.getSubimage(tileLength*2,tileLength,tileLength,tileLength);
@@ -45,6 +63,11 @@ public class SnakeBody extends EntityType{
         leftNUp = whole_snake.getSubimage(0,tileLength,tileLength,tileLength);
         downNRight = leftNUp;
     }
+    /**
+     * Returns a string representation of the snake's body.
+     *
+     * @return the string representation of the snake's body
+     */
     public String toString(){
         return "Body";
     }
